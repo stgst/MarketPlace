@@ -10,12 +10,12 @@ app.use(express.json());
 
 const db = new sqlite3.Database('database.sqlite');
 
-// db.serialize(() => {
-//   db.run("CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, description TEXT)");
-//   db.run("INSERT INTO products (name, price, description) VALUES ('商品 1', 1000, '這是商品 1')");
-//   db.run("INSERT INTO products (name, price, description) VALUES ('商品 2', 2000, '這是商品 2')");
-//   db.run("INSERT INTO products (name, price, description) VALUES ('商品 3', 3000, '這是商品 3')");
-// });
+db.serialize(() => {
+  db.run("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, description TEXT)");
+  db.run("INSERT OR REPLACE INTO products (id, name, price, description) VALUES (1, '商品 1', 1000, '這是商品 1')");
+  db.run("INSERT OR REPLACE INTO products (id, name, price, description) VALUES (2, '商品 2', 2000, '這是商品 2')");
+  db.run("INSERT OR REPLACE INTO products (id, name, price, description) VALUES (3, '商品 3', 3000, '這是商品 3')");
+ });
 
 // 獲取所有商品
 app.get('/api/products', (req, res) => {
